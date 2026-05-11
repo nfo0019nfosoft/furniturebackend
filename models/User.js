@@ -18,6 +18,14 @@ unique:true
 password:{
 type:String,
 required:true
+},
+
+resetOtp:{
+type:String
+},
+
+otpExpire:{
+type:Date
 }
 
 },
