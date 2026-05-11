@@ -45,6 +45,14 @@ const productRoutes =
 require("./routes/productRoutes");
 
 
+
+const authRoutes =
+require("./routes/authRoutes");
+
+app.use(
+"/api/auth",
+authRoutes
+);
 // =========================
 // DATABASE CONNECTION
 // =========================
