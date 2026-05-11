@@ -53,6 +53,13 @@ app.use(
 "/api/auth",
 authRoutes
 );
+const orderRoutes =
+require("./routes/orderRoutes");
+
+app.use(
+"/api/orders",
+orderRoutes
+);
 // =========================
 // DATABASE CONNECTION
 // =========================
