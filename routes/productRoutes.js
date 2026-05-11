@@ -35,6 +35,43 @@ router.get("/", async(req,res)=>{
 
 
 // =========================
+// GET PRODUCTS BY CATEGORY
+// =========================
+
+router.get(
+"/category/:name",
+async(req,res)=>{
+
+try{
+
+const products =
+await Product.find({
+
+category:
+req.params.name
+
+}).sort({createdAt:-1});
+
+res.json(products);
+
+}
+
+catch(error){
+
+res.status(500).json({
+
+success:false,
+
+message:error.message
+
+});
+
+}
+
+});
+
+
+// =========================
 // GET SINGLE PRODUCT
 // =========================
 
