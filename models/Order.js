@@ -6,6 +6,8 @@ new mongoose.Schema({
 
 userName:String,
 
+email:String,
+
 productId:String,
 
 productName:String,
