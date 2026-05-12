@@ -7,8 +7,9 @@ express.Router();
 const Order =
 require("../models/Order");
 
-
-// PLACE ORDER
+/* ========================= */
+/* PLACE ORDER */
+/* ========================= */
 
 router.post(
 "/",
@@ -47,8 +48,9 @@ message:error.message
 
 });
 
-
-// GET ALL ORDERS
+/* ========================= */
+/* GET ALL ORDERS */
+/* ========================= */
 
 router.get(
 "/",
@@ -61,6 +63,89 @@ await Order.find()
 .sort({createdAt:-1});
 
 res.json(orders);
+
+}
+catch(error){
+
+res.status(500).json({
+
+success:false,
+
+message:error.message
+
+});
+
+}
+
+});
+
+/* ========================= */
+/* UPDATE ORDER */
+/* ========================= */
+
+router.put(
+"/:id",
+async(req,res)=>{
+
+try{
+
+const updatedOrder =
+await Order.findByIdAndUpdate(
+
+req.params.id,
+
+req.body,
+
+{ new:true }
+
+);
+
+res.json({
+
+success:true,
+
+message:"Order Updated",
+
+data:updatedOrder
+
+});
+
+}
+catch(error){
+
+res.status(500).json({
+
+success:false,
+
+message:error.message
+
+});
+
+}
+
+});
+
+/* ========================= */
+/* DELETE ORDER */
+/* ========================= */
+
+router.delete(
+"/:id",
+async(req,res)=>{
+
+try{
+
+await Order.findByIdAndDelete(
+req.params.id
+);
+
+res.json({
+
+success:true,
+
+message:"Order Deleted"
+
+});
 
 }
 catch(error){
