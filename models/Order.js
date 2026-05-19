@@ -4,35 +4,39 @@ require("mongoose");
 const orderSchema =
 new mongoose.Schema({
 
-userName:String,
+userEmail:{
+type:String,
+required:true
+},
 
-email:String,
+products:[{
 
-productId:String,
+id:String,
 
-productName:String,
+name:String,
 
-productImage:String,
+image:String,
 
 price:Number,
 
-quantity:Number,
+quantity:Number
 
-totalPrice:Number,
+}],
 
-customerName:String,
+totalAmount:{
+type:Number,
+required:true
+},
 
-phone:String,
+address:{
+type:String,
+required:true
+},
 
-address:String,
-
-city:String,
-
-state:String,
-
-pincode:String,
-
-paymentMethod:String,
+paymentMethod:{
+type:String,
+required:true
+},
 
 status:{
 type:String,
