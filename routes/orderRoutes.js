@@ -7,6 +7,8 @@ express.Router();
 const Order =
 require("../models/Order");
 
+
+
 /* ========================= */
 /* PLACE ORDER */
 /* ========================= */
@@ -17,17 +19,44 @@ async(req,res)=>{
 
 try{
 
+const {
+
+userEmail,
+products,
+totalAmount,
+address,
+paymentMethod
+
+} = req.body;
+
+
+// CREATE ORDER
+
 const order =
-new Order(req.body);
+new Order({
+
+userEmail,
+products,
+totalAmount,
+address,
+paymentMethod
+
+});
+
+
+// SAVE ORDER
 
 const saved =
 await order.save();
+
+
+// RESPONSE
 
 res.json({
 
 success:true,
 
-message:"Order Placed",
+message:"Order Placed Successfully",
 
 data:saved
 
@@ -35,6 +64,8 @@ data:saved
 
 }
 catch(error){
+
+console.log(error);
 
 res.status(500).json({
 
@@ -47,6 +78,10 @@ message:error.message
 }
 
 });
+
+
+
+
 
 /* ========================= */
 /* GET ALL ORDERS */
@@ -60,12 +95,20 @@ try{
 
 const orders =
 await Order.find()
-.sort({createdAt:-1});
+.sort({ createdAt:-1 });
 
-res.json(orders);
+res.json({
+
+success:true,
+
+orders
+
+});
 
 }
 catch(error){
+
+console.log(error);
 
 res.status(500).json({
 
@@ -78,6 +121,122 @@ message:error.message
 }
 
 });
+
+
+
+
+
+/* ========================= */
+/* GET USER ORDERS */
+/* ========================= */
+
+router.get(
+"/user-orders/:email",
+async(req,res)=>{
+
+try{
+
+const { email } =
+req.params;
+
+
+// FIND USER ORDERS
+
+const orders =
+await Order.find({
+
+userEmail: email
+
+})
+.sort({ createdAt:-1 });
+
+
+// RESPONSE
+
+res.json({
+
+success:true,
+
+orders
+
+});
+
+}
+catch(error){
+
+console.log(error);
+
+res.status(500).json({
+
+success:false,
+
+message:error.message
+
+});
+
+}
+
+});
+
+
+
+
+
+/* ========================= */
+/* GET SINGLE ORDER */
+/* ========================= */
+
+router.get(
+"/:id",
+async(req,res)=>{
+
+try{
+
+const order =
+await Order.findById(
+req.params.id
+);
+
+if(!order){
+
+return res.status(404).json({
+
+success:false,
+
+message:"Order Not Found"
+
+});
+
+}
+
+res.json({
+
+success:true,
+
+order
+
+});
+
+}
+catch(error){
+
+console.log(error);
+
+res.status(500).json({
+
+success:false,
+
+message:error.message
+
+});
+
+}
+
+});
+
+
+
+
 
 /* ========================= */
 /* UPDATE ORDER */
@@ -113,6 +272,8 @@ data:updatedOrder
 }
 catch(error){
 
+console.log(error);
+
 res.status(500).json({
 
 success:false,
@@ -124,6 +285,10 @@ message:error.message
 }
 
 });
+
+
+
+
 
 /* ========================= */
 /* DELETE ORDER */
@@ -150,6 +315,8 @@ message:"Order Deleted"
 }
 catch(error){
 
+console.log(error);
+
 res.status(500).json({
 
 success:false,
@@ -161,6 +328,14 @@ message:error.message
 }
 
 });
+
+
+
+
+
+/* ========================= */
+/* EXPORT */
+/* ========================= */
 
 module.exports =
 router;
