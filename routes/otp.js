@@ -7,6 +7,12 @@ express.Router();
 const twilio =
 require("twilio");
 
+const jwt =
+require("jsonwebtoken");
+
+const User =
+require("../models/User");
+
 
 // TWILIO CLIENT
 
@@ -27,7 +33,9 @@ const otpStore = {};
 
 
 
+// =========================
 // SEND OTP
+// =========================
 
 router.post(
 "/send-otp",
@@ -35,16 +43,37 @@ async(req,res)=>{
 
 try{
 
-const { phone } =
-req.body;
+const {
+phone,
+email
+} = req.body;
 
 
-if(!phone){
+// VALIDATION
+
+if(!phone || !email){
 
 return res.json({
 
 success:false,
-message:"Phone number required"
+message:"Phone and Email required"
+
+});
+
+}
+
+
+// CHECK USER
+
+const user =
+await User.findOne({ email });
+
+if(!user){
+
+return res.json({
+
+success:false,
+message:"Please Register First"
 
 });
 
@@ -80,6 +109,7 @@ body:
 });
 
 
+// RESPONSE
 
 res.json({
 
@@ -107,7 +137,9 @@ message:"Failed To Send OTP"
 
 
 
+// =========================
 // VERIFY OTP
+// =========================
 
 router.post(
 "/verify-otp",
@@ -115,11 +147,16 @@ async(req,res)=>{
 
 try{
 
-const { phone, otp } =
-req.body;
+const {
+phone,
+otp,
+email
+} = req.body;
 
 
-if(!phone || !otp){
+// VALIDATION
+
+if(!phone || !otp || !email){
 
 return res.json({
 
@@ -131,16 +168,58 @@ message:"Fill all fields"
 }
 
 
+// FIND USER
+
+const user =
+await User.findOne({ email });
+
+if(!user){
+
+return res.json({
+
+success:false,
+message:"User Not Found"
+
+});
+
+}
+
+
+// CHECK OTP
+
 if(otpStore[phone] == otp){
 
 delete otpStore[phone];
 
+
+// JWT TOKEN
+
+const token =
+jwt.sign(
+
+{
+id:user._id,
+username:user.username
+},
+
+"SECRETKEY"
+
+);
+
+
+// SUCCESS RESPONSE
+
 return res.json({
 
 success:true,
+
 message:"Login Success",
 
-token:"demo_token"
+token,
+
+username:user.username,
+
+email:user.email
 
 });
 
