@@ -228,6 +228,68 @@ message:error.message
 
 
 // =========================
+// CHECK USER EXISTS
+// =========================
+
+router.post(
+"/check-user",
+async(req,res)=>{
+
+try{
+
+const { email } = req.body;
+
+
+// FIND USER
+
+const user =
+await User.findOne({ email });
+
+
+// USER NOT FOUND
+
+if(!user){
+
+return res.json({
+
+success:false,
+
+message:"User Not Found"
+
+});
+
+}
+
+
+// USER EXISTS
+
+res.json({
+
+success:true,
+
+message:"User Exists"
+
+});
+
+}
+catch(error){
+
+res.json({
+
+success:false,
+
+message:error.message
+
+});
+
+}
+
+});
+
+
+
+
+// =========================
 // SEND OTP
 // =========================
 
@@ -506,6 +568,11 @@ message:error.message
 });
 
 
+
+
+// =========================
+// EXPORT
+// =========================
 
 module.exports =
 router;
