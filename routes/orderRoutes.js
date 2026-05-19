@@ -8,7 +8,6 @@ const Order =
 require("../models/Order");
 
 
-
 /* ========================= */
 /* PLACE ORDER */
 /* ========================= */
@@ -21,7 +20,9 @@ try{
 
 const {
 
+userName,
 userEmail,
+phone,
 products,
 totalAmount,
 address,
@@ -35,7 +36,9 @@ paymentMethod
 const order =
 new Order({
 
+userName,
 userEmail,
+phone,
 products,
 totalAmount,
 address,
@@ -82,7 +85,6 @@ message:error.message
 
 
 
-
 /* ========================= */
 /* GET ALL ORDERS */
 /* ========================= */
@@ -121,7 +123,6 @@ message:error.message
 }
 
 });
-
 
 
 
@@ -181,7 +182,6 @@ message:error.message
 
 
 
-
 /* ========================= */
 /* GET SINGLE ORDER */
 /* ========================= */
@@ -237,7 +237,6 @@ message:error.message
 
 
 
-
 /* ========================= */
 /* UPDATE ORDER */
 /* ========================= */
@@ -289,7 +288,6 @@ message:error.message
 
 
 
-
 /* ========================= */
 /* DELETE ORDER */
 /* ========================= */
@@ -328,7 +326,6 @@ message:error.message
 }
 
 });
-
 
 
 

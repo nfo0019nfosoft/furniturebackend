@@ -4,9 +4,17 @@ require("mongoose");
 const orderSchema =
 new mongoose.Schema({
 
+userName:{
+type:String
+},
+
 userEmail:{
 type:String,
 required:true
+},
+
+phone:{
+type:String
 },
 
 products:[{
