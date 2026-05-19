@@ -43,7 +43,6 @@ express.static("public")
 );
 
 
-
 // =========================
 // ROUTES IMPORT
 // =========================
@@ -59,6 +58,12 @@ require("./routes/authRoutes");
 
 const orderRoutes =
 require("./routes/orderRoutes");
+
+
+// OTP ROUTE IMPORT
+
+const otpRoutes =
+require("./routes/otp");
 
 
 
@@ -86,6 +91,15 @@ app.use(
 "/api/orders",
 orderRoutes
 );
+
+
+// OTP ROUTES
+
+app.use(
+"/api/otp",
+otpRoutes
+);
+
 
 
 
